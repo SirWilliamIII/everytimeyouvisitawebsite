@@ -11,3 +11,5 @@ wheels/
 .eggs
 .qodo
 captures/*
+.eggs/
+captures/

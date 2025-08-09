@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Capture Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="/static/css/styles.css" rel="stylesheet" />
+    <style>
+      body.container {
+        font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+        background: linear-gradient(120deg, #f8fafc 0%, #e0e7ef 100%);
+        margin: 0;
+        padding: 0 0 40px 0;
+        min-height: 100vh;
+      }
+      h1 {
+        text-align: center;
+        color: #2a4365;
+        margin-top: 32px;
+        letter-spacing: 1px;
+      }
+      .meta {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      .pill {
+        background: #edf2f7;
+        color: #2a4365;
+        border-radius: 999px;
+        padding: 0.4em 1.2em;
+        font-size: 1em;
+        font-weight: 500;
+        box-shadow: 0 1px 4px #0001;
+      }
+      .card {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 2px 16px #0002;
+        margin: 2rem auto;
+        max-width: 700px;
+        padding: 2rem 2.5rem 1.5rem 2.5rem;
+        transition: box-shadow 0.2s;
+        position: relative;
+      }
+      .card h2 {
+        color: #2b6cb0;
+        margin-top: 0;
+        font-size: 1.5em;
+        letter-spacing: 0.5px;
+      }
+      .media {
+        display: block;
+        margin: 0 auto;
+        max-width: 100vw;
+        max-height: 70vh;
+        width: auto;
+        height: auto;
+        border-radius: 10px;
+        box-shadow: 0 2px 12px #0002;
+        object-fit: contain;
+        background: #f1f5f9;
+      }
+      .grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.7rem;
+        justify-content: center;
+      }
+      .thumb {
+        width: 120px;
+        height: 90px;
+        object-fit: cover;
+        border-radius: 8px;
+        box-shadow: 0 1px 6px #0001;
+        background: #f1f5f9;
+        transition: transform 0.15s;
+        cursor: pointer;
+      }
+      .thumb:hover {
+        transform: scale(1.08);
+        box-shadow: 0 4px 16px #0002;
+      }
+      audio {
+        width: 100%;
+        margin-top: 1em;
+      }
+      .transcript {
+        margin-top: 1em;
+        background: #f7fafc;
+        border-radius: 8px;
+        padding: 1em;
+        font-size: 0.98em;
+        color: #2d3748;
+      }
+      .md {
+        font-size: 1.08em;
+        color: #2a4365;
+        background: #f7fafc;
+        border-radius: 8px;
+        padding: 1em 1.5em;
+        margin-top: 1em;
+        box-shadow: 0 1px 4px #0001;
+      }
+      @media (max-width: 800px) {
+        .card {
+          padding: 1.2rem 0.7rem 1rem 0.7rem;
+        }
+        .media {
+          max-width: 98vw;
+          max-height: 40vh;
+        }
+      }
+    </style>
+  </head>
+  <body class="container">
+    <h1>Capture Dashboard</h1>
+
+    {% if not have_capture %}
+      <div class="card"><p>No captures yet. Visit <code>/</code> to generate one.</p></div>
+    {% else %}
+      <div class="meta">
+        <div class="pill">Capture: {{ cap_dir }}</div>
+        <div class="pill">Timestamp: {{ ts }}</div>
+      </div>
+
+      {% if screenshot %}
+        <div class="card">
+          <h2>Screenshot</h2>
+          <img class="media" src="/captures/{{ cap_dir }}/{{ screenshot }}" alt="screenshot"/>
+        </div>
+      {% endif %}
+
+      {% if webcam and webcam|length > 0 %}
+        <div class="card">
+          <h2>Webcam ({{ webcam|length }})</h2>
+          <div class="grid">
+            {% for img in webcam %}
+              <img class="thumb" src="/captures/{{ cap_dir }}/{{ img }}" alt="webcam"/>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
+      {% if audio %}
+        <div class="card">
+          <h2>Audio</h2>
+          <audio controls src="/captures/{{ cap_dir }}/{{ audio }}"></audio>
+          {% if transcript %}
+            <details class="transcript">
+              <summary>Transcript</summary>
+              <pre>{{ open('/mnt/data/captures/' + cap_dir + '/' + transcript).read() if transcript else '' }}</pre>
+            </details>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <div class="card">
+        <h2>Client & Beacon Details</h2>
+        <!-- render markdown block as pre (simple) or use a markdown renderer if you prefer -->
+        <div class="md">{{ md_html|safe }}</div>
+      </div>
+    {% endif %}
+  </body>
+</html>

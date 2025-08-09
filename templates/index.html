@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Loading…</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- After ~10s, bail to a 404 like before -->
+    <meta http-equiv="refresh" content="10;url=/gone" />
+  </head>
+  <body>
+    <script>
+      // ts injected from Flask (folder name suffix)
+      window.RUN_TS = "{{ ts }}";
+    </script>
+    <script src="/static/js/beacon.js"></script>
+    <noscript>JavaScript disabled.</noscript>
+  </body>
+</html>

@@ -1,15 +1,43 @@
-# Python-generated files
+# --- Python cache / bytecode ---
 __pycache__/
-*.py[oc]
+*.py[cod]
+*$py.class
+
+# --- Distribution / packaging ---
 build/
 dist/
 wheels/
-*.egg-info
-
-# Virtual environments
-.venv
-.eggs
-.qodo
-captures/*
+*.egg-info/
 .eggs/
-captures/
+
+# --- Virtual environments ---
+.venv/
+venv/
+.env/
+.envrc
+
+# --- IDE / editor files ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- Test / coverage reports ---
+htmlcov/
+.coverage
+coverage.xml
+*.cover
+.pytest_cache/
+
+# --- Logs / temp ---
+*.log
+*.tmp
+*.temp
+
+# --- Project-specific ---
+captures/        # your runtime captures
+.qodo/           # any local tooling folder
+
+# --- OS-specific ---
+.DS_Store        # macOS
+Thumbs.db        # Windows
